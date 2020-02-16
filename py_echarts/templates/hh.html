@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" style="width:100%;height:100%;">
+<head>
+    <meta charset="UTF-8">
+    <title>学历薪资关系图</title>
+    <script src="/static/echarts.min.js"></script>
+    <script src="/static/jquery-1.12.0.min.js"></script>
+</head>
+<body style="width:100%;height:100%;">
+     <div id="main" style="width:100%;height:100%;"></div>
+     <script type="text/javascript">
+     $.ajax({
+          url:'/dd_hh',
+          type:'get',
+          dataType:'json',
+          success:function(returnData){
+              var myChart = echarts.init(document.getElementById('main'));
+          option = {
+          title: {
+                text: '地点薪资关系图',
+                subtext: '北风网',
+                left: 'left'
+            },
+    tooltip : {
+        trigger: '学历薪资关系图',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    legend: {
+        data:['总职位数','平均薪资','最大薪资','最小薪资']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            data : returnData.xl_list
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'总职位数',
+            type:'bar',
+            data:returnData.count_zw
+        },
+        {
+            name:'平均薪资',
+            type:'bar',
+            data:returnData.avg_xz
+        },
+        {
+            name:'最大薪资',
+            type:'bar',
+            data:returnData.max_xz
+        },
+        {
+            name:'最小薪资',
+            type:'bar',
+            data:returnData.min_xz
+        }
+
+    ]
+};
+myChart.setOption(option)
+          }
+     })
+</script>
+
+</body>
+</html>

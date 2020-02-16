@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%">
+<head>
+    <meta charset="UTF-8">
+    <title>职位类型薪资关系图</title>
+    <script src="/static/echarts.min.js"></script>
+    <script src="/static/jquery-1.12.0.min.js"></script>
+</head>
+<body style="height:100%">
+<div id="main" style="height:100%;width:100%;"></div>
+<script type="text/javascript">
+    $.ajax({
+    url:'/dd_zx',
+    type:'get',
+    dataType:'json',
+    success:function(returnData){
+    var myChart = echarts.init(document.getElementById('main'));
+    option = {
+    title: {
+        text: '职位类型薪资关系图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['职位总数','平均薪资','最高薪资','最低薪资']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: returnData.type_list
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'职位总数',
+            type:'line',
+            data:returnData.count_zw
+        },
+        {
+            name:'平均薪资',
+            type:'line',
+            data:returnData.avg_zwyx
+        },
+        {
+            name:'最高薪资',
+            type:'line',
+            data:returnData.max_zwyx
+        },
+        {
+            name:'最低薪资',
+            type:'line',
+            data:returnData.min_zwyx
+        }
+    ]
+};
+
+myChart.setOption(option);
+
+    }
+})
+
+</script>
+</body>
+</html>

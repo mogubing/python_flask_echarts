@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%">
+<head>
+    <meta charset="UTF-8">
+    <title>薪资和地点的关系图</title>
+    <script src="/static/echarts.min.js"></script>
+    <script src="/static/china.js"></script>
+    <script src="/static/jquery-1.12.0.min.js"></script>
+</head>
+<body style="height:100%">
+<div id="main" style="width:100%;height:100%;"></div>
+<script type="text/javascript">
+    $.ajax({
+    <!--url:发送请求的地址-->
+    url:'/dd_xz',
+    type:'get',
+    dataType:'json',
+    success:function(returnData){
+        var myChart=echarts.init(document.getElementById('main'));
+        <!--配置项-->
+         option = {
+            title: {
+                text: '地点薪资关系图',
+                subtext: '北风网',
+                left: 'center'
+            },
+            tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    x: 'left',
+                    y: 'top',
+                    data:['平均薪资']
+                },
+            visualMap: {
+                min: 0,
+                max: 30000,
+                left: 'left',
+                top: 'bottom',
+                text: ['高','低'],           // 文本，默认为数值文本
+                calculable: true
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    name: '平均薪资',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    label: {
+                        normal: {
+                            show: true
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    data:returnData.avg_zwyx
+                 }
+                    ]
+                    };
+            myChart.setOption(option);
+            }
+         });
+</script>
+</body>
+</html>
